@@ -14,27 +14,27 @@ class BBSAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AvatarModel>(
-      builder: (context, model, child) {
-        Widget? child;
-        final path = url;
-        if (path == null ||
-            path.isEmpty ||
-            (child = model.find(path)) == null) {
-          child = SvgPicture.asset(
-            SvgIcon.defaultAvatar,
+        builder: (context, model, child) {
+          Widget? child;
+          final path = url;
+          if (path == null ||
+              path.isEmpty ||
+              (child = model.find(path)) == null) {
+            child = SvgPicture.asset(
+              SvgIcon.defaultAvatar,
+              height: radius * 2,
+              width: radius * 2,
+            );
+          }
+          return Container(
             height: radius * 2,
             width: radius * 2,
+            alignment: Alignment.center,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: child,
           );
-        }
-        return Container(
-          height: radius * 2,
-          width: radius * 2,
-          alignment: Alignment.center,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(shape: BoxShape.circle),
-          child: child,
-        );
-      },
-    );
+        },
+      );
   }
 }

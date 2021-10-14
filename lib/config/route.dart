@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unique_bbs/data/bean/forum/full_forum.dart';
 import 'package:unique_bbs/data/bean/forum/thread.dart';
 import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
 import 'package:unique_bbs/widget/home/check/update_user.dart';
 import 'package:unique_bbs/widget/home/home.dart';
 import 'package:unique_bbs/widget/home/home_select.dart';
@@ -10,8 +11,11 @@ import 'package:unique_bbs/widget/login/login.dart';
 import 'package:unique_bbs/widget/login/pw_set.dart';
 import 'package:unique_bbs/widget/post/detail/post_detail.dart';
 import 'package:unique_bbs/widget/post/thread_page.dart';
+import 'package:unique_bbs/widget/post/userdetail/user_posts.dart';
+import 'package:unique_bbs/widget/post/userdetail/user_reports.dart';
 import 'package:unique_bbs/widget/report/report_page.dart';
 import 'package:unique_bbs/widget/report/report_post_page.dart';
+import 'package:unique_bbs/widget/post/userdetail/user_detail.dart';
 
 class BBSRoute {
   static const main = '/'; // 主页
@@ -25,7 +29,7 @@ class BBSRoute {
 
   static const login = 'login'; // 登录
 
-  static const postList = 'postList'; // 帖子列表：首页-情报-通知公告、首页-我的-我的帖子
+  static const postList = 'postList'; // 帖子列表：首页-情报-通知公告、首页-我的-我的帖子 查看他人帖子
   static const postDetail = 'postDetail'; // 帖子详情
   static const postReport = 'postReport'; // 发日报
 
@@ -36,6 +40,9 @@ class BBSRoute {
   static const message = 'message'; // 消息页面
   static const userInfoUpdate = 'userInfoUpdate';
 
+  static const userDetail = 'userDetail'; //点击头像后个人信息界面
+  static const userReports = 'userReports'; //查看他人的日报
+  static const userPosts = 'userPosts';
   // TODO: 不需要传参的路由在这里进行声明
   static final routes = {
     home: HomeWidget(),
@@ -65,6 +72,15 @@ class BBSRoute {
     }
     // used for build page with arguments
     switch (path) {
+      case userPosts:
+        return MaterialPageRoute(
+            builder: generateBuilder(UserPostsWidget(arg as UserInfo)));
+      case userReports:
+        return MaterialPageRoute(
+          builder: generateBuilder(UserReportWidget(arg as UserInfo)));
+      case userDetail:
+        return MaterialPageRoute(
+          builder: generateBuilder(UserDetailWidget(arg as UserInfo)));
       case postDetail:
         return MaterialPageRoute(
             builder: generateBuilder(PostDetailWidget(arg as Thread)));
