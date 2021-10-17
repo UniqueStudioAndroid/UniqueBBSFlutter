@@ -23,16 +23,17 @@ class ReportModel extends ChangeNotifier {
 
   getItemData(int year, int index) => _yearList[year]![index];
 
-  fetchData() {
+  fetchData(String uid) {
     if (_fetching || _fetchComplete) {
       return;
     }
     _fetching = true;
-    Server.instance.reports(Repo.instance.uid, _fetchedPage + 1).then((rsp) {
+    //Server.instance.reports(Repo.instance.uid, _fetchedPage + 1).then((rsp)
+    Server.instance.reports(uid, _fetchedPage + 1).then((rsp) {
       if (!rsp.success) {
         Fluttertoast.showToast(msg: rsp.msg!);
         Future.delayed(Duration(seconds: HyperParam.requestInterval))
-            .then((_) => fetchData());
+            .then((_) => fetchData(uid));
         return;
       }
       Reports data = rsp.data!;

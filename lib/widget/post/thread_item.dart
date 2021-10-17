@@ -81,35 +81,45 @@ class ThreadItem extends StatelessWidget {
     if (!data.active) return Container();
     final maxTextWidth = MediaQuery.of(context).size.width - 150;
     double maxTitleWidth = maxTextWidth - computeTextOffset();
-    return GestureDetector(
-      onTap: () {
-        Thread thread = Thread(data, creator, []);
-        print(thread.thread.toJson());
-        Navigator.of(context).pushNamed(BBSRoute.postDetail, arguments: thread);
-      },
-      child: Row(
-        children: <Widget>[
-          BBSAvatar(url: creator.avatar),
-          Container(
-            margin: EdgeInsets.only(left: _avatarTextPadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(children: <Widget>[
-                  _buildLimitWidthText(
-                      subject, _subjectTextStyle, maxTitleWidth),
-                  if (data.top > 0) _buildTextWidget(_topText),
-                  if (data.diamond) _buildTextWidget(_hotText),
-                  if (isNew) _buildTextWidget(_newText),
-                ]),
-                _buildLimitWidthText(message, _messageTextStyle, maxTextWidth),
-              ],
-            ),
+    return Row(
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(BBSRoute.userDetail, arguments: creator);
+          },
+          child: BBSAvatar(url: creator.avatar),
+        ),
+        GestureDetector(
+          onTap: () {
+            Thread thread = Thread(data, creator, []);
+            print(thread.thread.toJson());
+            Navigator.of(context).pushNamed(BBSRoute.postDetail, arguments: thread);
+          },
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: _avatarTextPadding),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      _buildLimitWidthText(
+                          subject, _subjectTextStyle, maxTitleWidth),
+                      if (data.top > 0) _buildTextWidget(_topText),
+                      if (data.diamond) _buildTextWidget(_hotText),
+                      if (isNew) _buildTextWidget(_newText),
+                    ]),
+                    _buildLimitWidthText(message, _messageTextStyle, maxTextWidth),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
+
   }
 }

@@ -152,6 +152,11 @@ class StringConstant {
   static const uniqueScheme = 'unique';
   static const networkProtocol = 'https';
   static const unknown = "未知错误";
+  //点击头像查看他人信息
+  static const showUserPost = "查看TA的帖子";
+  static const showUserReport = "查看TA的日报";
+  static const userReport = "TA的日报";
+  static const userPost = "TA的帖子";
 }
 
 // 存放资源的一些常量

@@ -28,7 +28,9 @@ class ThreadModel extends ChangeNotifier {
 
   final bool isMe;
 
-  ThreadModel(this._forum, {this.isMe = false});
+  UserInfo? user;
+
+  ThreadModel(this._forum, {this.user , this.isMe = false});
 
   get threadCount => _threadList.length;
 
@@ -38,6 +40,10 @@ class ThreadModel extends ChangeNotifier {
     if (isMe) {
       final uid = Repo.instance.uid;
       return Repo.instance.userModel.find(uid)?.user;
+    }
+    if (user != null) {
+      final uid = user!.id;
+      return user;
     }
     if (index >= _userList.length) return null;
     return _userList[index];
@@ -55,13 +61,16 @@ class ThreadModel extends ChangeNotifier {
     Logger.v(_TAG, "Fetching page ${_fetchedPage + 1}");
     // 我的帖子调用另一个接口获取
     if (isMe)
-      _fetchUserThreads();
+      _fetchUserThreads(Repo.instance.uid);
+    else if (user != null) {
+      _fetchUserThreads(user!.id);
+    }
     else
       _fetchForumThreads();
   }
 
-  void _fetchUserThreads() {
-    final uid = Repo.instance.uid;
+
+  void _fetchUserThreads(String uid) {
     Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
         final threads = rsp.data?.threads as List<ThreadInfo>;

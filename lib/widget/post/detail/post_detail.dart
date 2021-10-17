@@ -232,7 +232,7 @@ Widget _buildEmptyComment(BuildContext context, PostModel model) {
   return _wrapCommentBox(widget);
 }
 
-Widget _buildComment(PostData? data) {
+Widget _buildComment(PostData? data, BuildContext context) {
   // 暂时找不到数据或者 post 被删除
   if (data == null || !data.post.active) {
     return Container();
@@ -240,9 +240,14 @@ Widget _buildComment(PostData? data) {
   return _wrapCommentBox(Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      BBSAvatar(
-        url: data.user.avatar,
-        radius: _commentAvatarRadius,
+      GestureDetector(
+        onTap: () {
+          //Thread thread = Thread(data, creator, []);
+          Navigator.of(context).pushNamed('userDetail', arguments: data.user);
+        },
+        child: BBSAvatar(url: data.user.avatar,
+          radius: _commentAvatarRadius,
+        ),
       ),
       Expanded(
         child: Container(
@@ -323,7 +328,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
             return _buildEmptyComment(context, model);
           }
           // 处理实际的评论
-          return _buildComment(model.getPostData(index - 2));
+          return _buildComment(model.getPostData(index - 2), context);
         },
         itemCount: 3 + max(model.postCount(), 1),
       );

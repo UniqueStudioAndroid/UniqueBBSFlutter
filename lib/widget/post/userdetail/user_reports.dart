@@ -1,7 +1,7 @@
 import 'package:unique_bbs/config/constant.dart';
 import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
 import 'package:unique_bbs/data/model/report_model.dart';
-import 'package:unique_bbs/data/repo.dart';
 import 'package:unique_bbs/widget/report/report_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,18 +15,26 @@ const _yearListIconTextGap = 4.0;
 const _itemListVerticalPadding = 20.0;
 const _itemListHorizonPadding = 5.0;
 
-class ReportPageWidget extends StatefulWidget {
+class UserReportWidget extends StatefulWidget {
+  final UserInfo user;
+
+  UserReportWidget(this.user);
+
   @override
-  State<StatefulWidget> createState() => ReportPageState();
+  State<StatefulWidget> createState() => UserReportState(this.user);
 }
 
-class ReportPageState extends State<StatefulWidget> {
+class UserReportState extends State<StatefulWidget> {
+  final UserInfo user;
+
+  UserReportState(this.user);
+
   var model = ReportModel();
   ScrollController scrollController = ScrollController();
   bool haveData = false;
 
   void fetchData() {
-    model.fetchData(Repo.instance.uid);
+    model.fetchData(user.id);
   }
 
   @override
@@ -57,29 +65,21 @@ class ReportPageState extends State<StatefulWidget> {
   }
 
   _buildAppBar(BuildContext context) => AppBar(
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back_ios),
-        ),
-        backgroundColor: ColorConstant.backgroundLightGrey,
-        actions: <Widget>[
-          IconButton(
-              icon: SvgPicture.asset(SvgIcon.postReport),
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(BBSRoute.postReport, arguments: null);
-              }),
-        ],
-        title: Text(
-          StringConstant.reportTitle,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      );
+    leading: GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: Icon(Icons.arrow_back_ios),
+    ),
+    backgroundColor: ColorConstant.backgroundLightGrey,
+    title: Text(
+      StringConstant.userReport,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    centerTitle: true,
+  );
 
   _buildYearList() {
     return Consumer<ReportModel>(builder: (context, model, child) {
@@ -180,3 +180,5 @@ class ReportPageState extends State<StatefulWidget> {
     );
   }
 }
+
+
